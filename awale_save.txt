@@ -1,0 +1,5 @@
+Plateau:
+0 0 0 0 0 0 1 0 1 0 1 0 
+Scores:
+Joueur: 23
+Adversaire: 22
