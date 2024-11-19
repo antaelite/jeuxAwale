@@ -4,7 +4,7 @@
 
 #define TOTAL_HOLES 12
 #define INITIAL_SEEDS 4
-#define WINNING_SCORE 2
+#define WINNING_SCORE 25
 
 typedef struct {
     int board[TOTAL_HOLES]; // Plateau de jeu : 6 trous pour chaque joueur
