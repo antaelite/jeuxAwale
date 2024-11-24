@@ -94,6 +94,63 @@ void challenge_client(int sender_index, const char *opponent_pseudo) {
     pthread_mutex_unlock(&clients_mutex);
 }
 
+void quit_game(int sender_index) {
+    pthread_mutex_lock(&clients_mutex);
+
+    for (int i = 0; i < game_count; i++) {
+        Game *game = &games[i];
+
+        if (game->player1_index == sender_index || game->player2_index == sender_index) {
+            int opponent_index = (game->player1_index == sender_index) ? game->player2_index : game->player1_index;
+
+            // Envoyer un message aux deux joueurs
+            send_to_client(clients[game->player1_index].sock, "La partie a été arrêtée.\n");
+            send_to_client(clients[game->player2_index].sock, "La partie a été arrêtée.\n");
+
+            for (int j = 0; j < game->observer_count; j++) {
+                send_to_client(clients[game->observers[j]].sock, "La partie a été arrêtée.\n");
+            }
+
+            // Mettre à jour les états des joueurs
+            clients[game->player1_index].in_game = 0;
+            clients[game->player2_index].in_game = 0;
+
+            // Supprimer la partie
+            games[i] = games[--game_count];
+
+            pthread_mutex_unlock(&clients_mutex);
+            return;
+        }
+    }
+
+    pthread_mutex_unlock(&clients_mutex);
+}
+
+// Fonction pour arrêter l'observation d'une partie
+void end_observation(int observer_index) {
+    pthread_mutex_lock(&clients_mutex);
+
+    for (int i = 0; i < game_count; i++) {
+        Game *game = &games[i];
+
+        for (int j = 0; j < game->observer_count; j++) {
+            if (game->observers[j] == observer_index) {
+                // Retirer l'observateur
+                for (int k = j; k < game->observer_count - 1; k++) {
+                    game->observers[k] = game->observers[k + 1];
+                }
+                game->observer_count--;
+
+                send_to_client(clients[observer_index].sock, "Vous avez arrêté d'observer la partie.\n");
+
+                pthread_mutex_unlock(&clients_mutex);
+                return;
+            }
+        }
+    }
+
+    pthread_mutex_unlock(&clients_mutex);
+}
 
 // Gestion des commandes client
 void handle_command(int sender_index, const char *command) {
@@ -159,7 +216,17 @@ void handle_command(int sender_index, const char *command) {
             clients[opponent_index].opponent = -1;
         }
         pthread_mutex_unlock(&clients_mutex);
-    } else if (isdigit(command[0])) {
+    } 
+    
+    else if (strncmp(command, "/quit", 5) == 0) {
+        quit_game(sender_index);
+    } else if (strncmp(command, "/endobservation", 15) == 0) {
+        end_observation(sender_index);
+    }
+    
+    
+    
+    else if (isdigit(command[0])) {
     int hole = atoi(command);
     process_move(sender_index, hole);
    } else if (strncmp(command, "/observe ", 9) == 0) {
@@ -203,7 +270,7 @@ void handle_command(int sender_index, const char *command) {
         pthread_mutex_unlock(&clients_mutex);
     } else if (strncmp(command, "/msg ", 5) == 0) {
         // Message privé
-        char target_pseudo[BUF_SIZE], message[BUF_SIZE];
+        char target_pseudo[BUF_SIZE], message[BUF_SIZE], private_message[BUF_SIZE];
         memset(message, 0, BUF_SIZE);         // Réinitialisation du message
         memset(private_message, 0, BUF_SIZE); // Réinitialisation du buffer privé
         sscanf(command + 5, "%s %[^\n]", target_pseudo, message);
@@ -261,7 +328,8 @@ void *client_handler(void *arg) {
         handle_command(index, buffer);
     }
 
-    
+    quit_game(index); // Arrêter la partie si le client se déconnecte
+
 
     // Déconnexion
     close(sock);
@@ -296,6 +364,8 @@ void initialize_game(int player1_index, int player2_index) {
              clients[game->current_player == 0 ? player1_index : player2_index].pseudo);
     send_to_client(clients[player1_index].sock, buffer);
     send_to_client(clients[player2_index].sock, buffer);
+
+    send_to_client(clients[game->current_player].sock, "C'est ton tour!\n");
 
     // Afficher le plateau initial
     send_game_state(game, player1_index, player2_index);
@@ -411,6 +481,9 @@ void process_move(int sender_index, int hole) {
 
             // Changer de joueur
             game->current_player = 1 - game->current_player;
+
+            // Envoyer un message au prochain joueur
+            send_to_client(clients[game->current_player].sock, "C'est ton tour!\n");
 
             // Envoyer l'état du jeu
             send_game_state(game, game->player1_index, game->player2_index);

@@ -80,6 +80,8 @@ int main(int argc, char **argv) {
     printf("/chat [message]      : Envoyer un message aux joueurs de votre partie\n");
     printf("/global [message]    : Envoyer un message général à tous les joueurs hors partie\n");
     printf("/msg [pseudo] [message] : Envoyer un message privé à un joueur\n");
+    printf("/quit                : Quitter la partie\n");
+    printf("/endobservation      : Arrêter d'observer une partie\n");
     printf("yes                  : Accepter un défi\n");
     printf("no                   : Refuser un défi\n");
     printf("0-5                  : Jouer un coup sur votre plateau\n");
