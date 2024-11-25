@@ -72,6 +72,7 @@ int main(int argc, char **argv) {
     // Boucle principale pour envoyer des commandes au serveur
     printf("Bienvenue dans le jeu Awalé ! \n");
     printf("Commandes disponibles :\n");
+<<<<<<< HEAD
     printf("/list                    : Liste des joueurs connectés\n");
     printf("/games                   : Liste des partis en cours\n");
     printf("/setbio [texte]          : Définir ou modifier votre bio (10 lignes max)\n");
@@ -95,6 +96,21 @@ int main(int argc, char **argv) {
     printf("0-5                      : Jouer un coup sur votre plateau\n");
     printf("/disconnect              : Se déconnecter du serveur\n");
 
+=======
+    printf("/list                : Liste des joueurs connectés\n");
+    printf("/setbio [texte]       : Définir ou modifier votre bio (10 lignes max)\n");
+    printf("/bio [pseudo]         : Afficher la bio d'un joueur\n");
+    printf("/challenge [pseudo]  : Défier un joueur\n");
+    printf("/observe [p1] [p2]   : Observer une partie entre deux joueurs\n");
+    printf("/chat [message]      : Envoyer un message aux joueurs de votre partie\n");
+    printf("/global [message]    : Envoyer un message général à tous les joueurs hors partie\n");
+    printf("/msg [pseudo] [message] : Envoyer un message privé à un joueur\n");
+    printf("/quit                : Quitter la partie\n");
+    printf("/endobservation      : Arrêter d'observer une partie\n");
+    printf("yes                  : Accepter un défi\n");
+    printf("no                   : Refuser un défi\n");
+    printf("0-5                  : Jouer un coup sur votre plateau\n");
+>>>>>>> d298211496a831100c15d87304975322e707e1fb
 
     while (1) {
         fgets(buffer, BUF_SIZE, stdin);
