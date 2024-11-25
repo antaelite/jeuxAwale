@@ -70,19 +70,31 @@ int main(int argc, char **argv) {
     }
 
     // Boucle principale pour envoyer des commandes au serveur
-    printf("Bienvenue dans le client Awalé ! \n");
+    printf("Bienvenue dans le jeu Awalé ! \n");
     printf("Commandes disponibles :\n");
-    printf("/list                : Liste des joueurs connectés\n");
-    printf("/setbio [texte]       : Définir ou modifier votre bio (10 lignes max)\n");
-    printf("/bio [pseudo]         : Afficher la bio d'un joueur\n");
-    printf("/challenge [pseudo]  : Défier un joueur\n");
-    printf("/observe [p1] [p2]   : Observer une partie entre deux joueurs\n");
-    printf("/chat [message]      : Envoyer un message aux joueurs de votre partie\n");
-    printf("/global [message]    : Envoyer un message général à tous les joueurs hors partie\n");
-    printf("/msg [pseudo] [message] : Envoyer un message privé à un joueur\n");
-    printf("yes                  : Accepter un défi\n");
-    printf("no                   : Refuser un défi\n");
-    printf("0-5                  : Jouer un coup sur votre plateau\n");
+    printf("/list                    : Liste des joueurs connectés\n");
+    printf("/games                   : Liste des partis en cours\n");
+    printf("/setbio [texte]          : Définir ou modifier votre bio (10 lignes max)\n");
+    printf("/viewbio                 : Consulter votre bio\n");
+    printf("/bio [pseudo]            : Afficher la bio d'un joueur\n");
+    printf("/challenge [pseudo]      : Défier un joueur\n");
+    printf("/quitgame                : Quitter une partie\n");
+    printf("/savegame                : Sauvegarder une partie\n");
+    printf("/mygames                 : Regarder ses parties\n");
+    printf("/addfriend [pseudo]      : Ajouter un ami\n");
+    printf("/viewfriends             : Consulter votre liste d'amis\n");
+    printf("/private                 : Se mettre en mode privé\n");
+    printf("/public                  : Se mettre en mode public\n");
+    printf("/observe [p1] [p2]       : Observer une partie entre deux joueurs\n");
+    printf("/quitobserve             : Quitter l'observation d'une partie\n");
+    printf("/chat [message]          : Envoyer un message aux joueurs de votre partie\n");
+    printf("/global [message]        : Envoyer un message général à tous les joueurs hors partie\n");
+    printf("/msg [pseudo] [message]  : Envoyer un message privé à un joueur\n");
+    printf("yes                      : Accepter un défi\n");
+    printf("no                       : Refuser un défi\n");
+    printf("0-5                      : Jouer un coup sur votre plateau\n");
+    printf("/disconnect              : Se déconnecter du serveur\n");
+
 
     while (1) {
         fgets(buffer, BUF_SIZE, stdin);
