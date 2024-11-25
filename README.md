@@ -1,6 +1,3 @@
-Voici la version formatée du manuel en **texte brut**, prête à être ajoutée dans un fichier README.md pour votre dépôt Git.
-
----
 
 # **Manuel de l'Utilisateur - Application Awalé**
 
