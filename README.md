@@ -13,14 +13,11 @@ Cette application permet de jouer au jeu Awalé en mode client-serveur. Elle inc
    ```bash
    gcc server.c -o server -pthread
    ```
-2. Lancez le serveur en spécifiant le port :
+2. Lancez le serveur ( le port est déja spécifié dans le code ):
    ```bash
-   ./server <port>
+   ./server 
    ```
-   Exemple :
-   ```bash
-   ./server 12345
-   ```
+   
    - Le serveur commence à écouter les connexions sur le port spécifié.
    - Les comptes des utilisateurs précédemment connectés sont chargés si un fichier de persistance existe.
 
@@ -29,15 +26,15 @@ Cette application permet de jouer au jeu Awalé en mode client-serveur. Elle inc
 ### **1.2 Lancement d’un client**
 1. Compilez le client :
    ```bash
-   gcc client.c -o client
+   gcc client.c -o client -pthread
    ```
-2. Lancez le client en spécifiant l'adresse IP du serveur, le port, et le pseudo :
+2. Lancez le client avec le localhost:
    ```bash
-   ./client <adresse_ip> <port> <pseudo>
+   ./client 127.0.0.1 <pseudo>
    ```
    Exemple :
    ```bash
-   ./client 127.0.0.1 12345 user1
+   ./client 127.0.0.1 user1
    ```
    - Si le pseudo existe déjà, les données associées (bio, amis, parties sauvegardées) sont restaurées.
 
